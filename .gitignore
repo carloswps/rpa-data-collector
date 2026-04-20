@@ -1,5 +1,26 @@
+# .NET
 bin/
 obj/
 /packages/
+*.user
+*.suo
+*.log
+*.tmp
+
+# Rider
+.idea/
 riderModule.iml
 /_ReSharper.Caches/
+
+# Visual Studio
+.vs/
+
+# Ambiente e segurança
+.env
+
+# Docker
+docker-compose.override.yml
+
+# Sistemas operacionais
+.DS_Store
+Thumbs.db
