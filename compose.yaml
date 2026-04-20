@@ -1,0 +1,7 @@
+﻿services:
+  rpaworker:
+    image: rpaworker
+    build:
+      context: .
+      dockerfile: RpaWorker/Dockerfile
+
