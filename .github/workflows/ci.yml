@@ -21,22 +21,22 @@ jobs:
         dotnet: ['10.0.x'] 
     
     steps:
-        - name: Checkout
-          uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-          - name: Setup .NET
-            uses: actions/setup-dotnet@v4
-            with:
-              dotnet-version: ${{ matrix.dotnet }}
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet }}
 
-          - name: Restore dependencies
-            run: dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore
 
-          - name: Build
-            run: dotnet build --no-restore --configuration Release
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
 
-          - name: Test
-            run: dotnet test --no-build --configuration Release --verbosity normal
+      - name: Test
+        run: dotnet test --no-build --configuration Release --verbosity normal
   
   build-docker:
     runs-on: ubuntu-latest
