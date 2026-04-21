@@ -5,20 +5,24 @@ namespace RpaWorker.Application;
 
 public class ScrapingService : IScrapingService
 {
-    private readonly ICollectRepository _collectRepository;
-    private readonly IDataParser _dataParser;
     private readonly HttpClient _httpClient;
+    private readonly IDataParser _dataParser;
+    private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<ScrapingService> _logger;
     private readonly string _sourceUrl;
 
-    public ScrapingService(ICollectRepository collectRepository, ILogger<ScrapingService> logger,
-        IOptions<ScrapingOptions> options, IDataParser dataParser, HttpClient httpClient)
+    public ScrapingService(
+        HttpClient httpClient,
+        IDataParser dataParser,
+        IServiceScopeFactory scopeFactory,
+        ILogger<ScrapingService> logger,
+        IOptions<ScrapingOptions> options)
     {
-        _collectRepository = collectRepository;
+        _httpClient = httpClient;
+        _dataParser = dataParser;
+        _scopeFactory = scopeFactory;
         _logger = logger;
         _sourceUrl = options.Value.Url;
-        _dataParser = dataParser;
-        _httpClient = httpClient;
     }
 
     public async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -41,9 +45,12 @@ public class ScrapingService : IScrapingService
                 return;
             }
 
+            using var scope = _scopeFactory.CreateScope();
+            var repository = scope.ServiceProvider.GetRequiredService<ICollectRepository>();
+
             foreach (var price in dataPrice)
             {
-                await _collectRepository.AddAsync(price);
+                await repository.AddAsync(price);
                 _logger.LogInformation("Price added: {Value} {Coin}", price.Value, price.Coin);
             }
         }

@@ -15,7 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     )
 );
 builder.Services.AddScoped<ICollectRepository, CollectRepository>();
-builder.Services.AddScoped<IDataParser, PriceParser>();
+builder.Services.AddSingleton<IDataParser, PriceParser>();
 builder.Services.AddHttpClient<IScrapingService, ScrapingService>(client =>
     {
         client.DefaultRequestHeaders.UserAgent.ParseAdd(
@@ -37,4 +37,11 @@ builder.Services.AddHttpClient<IScrapingService, ScrapingService>(client =>
     );
 
 var host = builder.Build();
+
+using (var scope = host.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await db.Database.MigrateAsync();
+}
+
 host.Run();
