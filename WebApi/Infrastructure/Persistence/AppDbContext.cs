@@ -19,7 +19,6 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Price>(entity =>
         {
             entity.ToTable("prices");
-            entity.HasKey(e => e.Id);
             entity.Property(e =>
                 e.Value).HasColumnType("decimal(18,4)");
             entity.Property(e =>
