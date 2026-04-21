@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using rpa_data_collector.Application.Services;
 using rpa_data_collector.Domain.Interfaces;
 using rpa_data_collector.Infrastructure.Persistence;
 
@@ -13,7 +14,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 builder.Services.AddScoped<ICollectRepository, CollectRepository>();
-
+builder.Services.AddScoped<ICollectService, CollectService>();
+builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
