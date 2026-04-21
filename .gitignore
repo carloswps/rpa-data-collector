@@ -17,6 +17,7 @@ riderModule.iml
 
 # Ambiente e segurança
 .env
+appsettings.Development.json
 
 # Docker
 docker-compose.override.yml
