@@ -6,11 +6,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>dotnet-RpaWorker-56f2bb85-86ea-41e5-b8ee-6f1ab4b4a4d5</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <Version>$(GitVersion_SemVer)</Version>
+        <Version Condition="'$(GitVersion_SemVer)' != ''">$(GitVersion_SemVer)</Version>
+        <Version Condition="'$(GitVersion_SemVer)' == ''">0.0.0-local</Version>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="GitVersion.MsBuild" Version="6.7.0">
+        <PackageReference Include="GitVersion.MsBuild" Version="6.7.0"
+                          Condition="Exists('$(MSBuildProjectDirectory)/../.git')">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

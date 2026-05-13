@@ -6,11 +6,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>rpa_data_collector</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <Version>$(GitVersion_SemVer)</Version>
+        <Version Condition="'$(GitVersion_SemVer)' != ''">$(GitVersion_SemVer)</Version>
+        <Version Condition="'$(GitVersion_SemVer)' == ''">0.0.0-local</Version>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="GitVersion.MsBuild" Version="6.7.0">
+        <PackageReference Include="GitVersion.MsBuild" Version="6.7.0"
+                          Condition="Exists('$(MSBuildProjectDirectory)/../.git')">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

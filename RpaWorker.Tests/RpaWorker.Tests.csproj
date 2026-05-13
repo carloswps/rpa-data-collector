@@ -10,7 +10,8 @@
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.4"/>
         <PackageReference Include="FluentAssertions" Version="8.4.0"/>
-        <PackageReference Include="GitVersion.MsBuild" Version="6.7.0">
+        <PackageReference Include="GitVersion.MsBuild" Version="6.7.0"
+                          Condition="Exists('$(MSBuildProjectDirectory)/../.git')">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
