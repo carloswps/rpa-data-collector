@@ -188,8 +188,8 @@ O projeto utiliza GitHub Actions para integração contínua. A cada push nas br
 
 ## Decisões Arquiteturais
 
-**PostgreSQL ao invés de banco em memória**
-O desafio permite banco em memória, mas optei pelo PostgreSQL para simular um ambiente real de produção. Com a containerização eliminamos qualquer overhead de configuração local entre diferentes ambientes de desenvolvimento.
+**PostgreSQL**
+PostgreSQL para simular um ambiente real de produção. Com a containerização eliminamos qualquer overhead de configuração local entre diferentes ambientes de desenvolvimento.
 
 **Repository Pattern**
 Desacopla a lógica de negócio do mecanismo de persistência, facilitando testes unitários via mocking e permitindo trocar o banco sem alterar as camadas superiores da aplicação.
@@ -211,9 +211,6 @@ Autenticação JWT para a API RESTful. Rate Limiting com Fixed Window (10 req/10
 
 **Migrations automáticas no startup**
 O Worker executa `MigrateAsync` na inicialização, garantindo que o schema do banco esteja sempre atualizado sem intervenção manual ao rodar `docker compose up`.
-
-**Porta do PostgreSQL exposta**
-A porta `5432` está exposta para facilitar a inspeção dos dados durante a avaliação. Em produção, recomenda-se remover o mapeamento e acessar o banco apenas pela rede interna do Docker.
  
 ---
 
