@@ -33,7 +33,9 @@ public class PriceParser : IDataParser
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
 
-            var docNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class,'YMlKec fxKbKc')]");
+            //var docNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class,'YMlKec fxKbKc')]");
+
+            var docNode = doc.DocumentNode.SelectSingleNode("//div[@class='N6SYTe']//span");
 
             if (docNode is null)
             {

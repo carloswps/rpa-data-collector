@@ -5,10 +5,10 @@ namespace RpaWorker.Application;
 
 public class ScrapingService : IScrapingService
 {
-    private readonly HttpClient _httpClient;
     private readonly IDataParser _dataParser;
-    private readonly IServiceScopeFactory _scopeFactory;
+    private readonly HttpClient _httpClient;
     private readonly ILogger<ScrapingService> _logger;
+    private readonly IServiceScopeFactory _scopeFactory;
     private readonly string _sourceUrl;
 
     public ScrapingService(
@@ -29,7 +29,18 @@ public class ScrapingService : IScrapingService
     {
         try
         {
-            var response = await _httpClient.GetAsync(_sourceUrl, cancellationToken);
+            var request = new HttpRequestMessage(HttpMethod.Get, _sourceUrl);
+            request.Headers.UserAgent.ParseAdd(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+            );
+            request.Headers.Accept.ParseAdd("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+            request.Headers.AcceptLanguage.ParseAdd("pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7");
+            request.Headers.Add("Sec-Fetch-Dest", "document");
+            request.Headers.Add("Sec-Fetch-Mode", "navigate");
+            request.Headers.Add("Sec-Fetch-Site", "none");
+            request.Headers.Add("Upgrade-Insecure-Requests", "1");
+
+            var response = await _httpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -37,7 +48,11 @@ public class ScrapingService : IScrapingService
                 return;
             }
 
-            var dataPrice = _dataParser.Parse(await response.Content.ReadAsStringAsync(cancellationToken));
+            var html = await response.Content.ReadAsStringAsync(cancellationToken);
+
+            //var dataPrice = _dataParser.Parse(await response.Content.ReadAsStringAsync(cancellationToken));
+
+            var dataPrice = _dataParser.Parse(html);
 
             if (!dataPrice.Any())
             {
