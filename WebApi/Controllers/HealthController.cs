@@ -20,7 +20,7 @@ public class HealthController : ControllerBase
     public async Task<IActionResult> Get()
     {
         var assembly = Assembly.GetExecutingAssembly();
-        var version = assembly.GetName().Version?.ToString() ?? "0.0.0";
+        var version = assembly.GetName().Version?.ToString() ?? "1.1.0";
 
         var canConnect = false;
 
