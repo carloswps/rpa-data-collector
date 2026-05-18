@@ -22,7 +22,7 @@ public class PriceParserTests
     [Fact]
     public void Parse_ValidHtml_ReturnsPriceWithCorrectValue()
     {
-        var html = "<div class=\"YMlKec fxKbKc\">5.75</div>";
+        var html = "<div class=\"N6SYTe\"><span>5.75</span></div>";
 
         var result = _parser.Parse(html).ToList();
 
@@ -61,7 +61,7 @@ public class PriceParserTests
     [Fact]
     public void Parse_NonNumericValue_ReturnsEmptyList()
     {
-        var html = "<div class=\"YMlKec fxKbKc\">não-é-número</div>";
+        var html = "<div class=\"N6SYTe\"><span>não-é-número</span></div>";
 
         var result = _parser.Parse(html).ToList();
 
