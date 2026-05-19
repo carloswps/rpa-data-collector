@@ -87,6 +87,7 @@ using (var scope = app.Services.CreateScope())
     db.Database.CanConnect();
 }
 
+app.UseCors("AllowAll");
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthentication();
