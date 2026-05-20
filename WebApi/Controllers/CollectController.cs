@@ -19,6 +19,7 @@ public class CollectController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllAsync()
     {
         var result = await _collectService.GetAllAsync();
