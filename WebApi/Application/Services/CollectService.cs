@@ -16,7 +16,14 @@ public class CollectService : ICollectService
     {
         var prices = await _collectRepository.GetAllAsync();
         var res = prices.Select(p => new PriceDto
-            { Id = p.Id, Date = p.Date, Coin = p.Coin, Value = p.Value, FontUrl = p.FontUrl });
+        {
+            Id = p.Id,
+            Date = p.Date,
+            Coin = p.Coin,
+            Value = p.Value,
+            FontUrl = p.FontUrl,
+            PercentageChange = p.PercentageChange
+        });
         return res;
     }
 
@@ -30,6 +37,7 @@ public class CollectService : ICollectService
             Date = prices.Date,
             Coin = prices.Coin,
             Value = prices.Value,
+            PercentageChange = prices.PercentageChange,
             FontUrl = prices.FontUrl
         };
         return res;
@@ -46,6 +54,7 @@ public class CollectService : ICollectService
             Coin = prices.Coin,
             Date = prices.Date,
             Value = prices.Value,
+            PercentageChange = prices.PercentageChange,
             FontUrl = prices.FontUrl
         };
         return res;

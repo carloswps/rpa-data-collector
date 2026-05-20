@@ -49,17 +49,42 @@ public class PriceParser : IDataParser
                 return [];
             }
 
+
+            var percentageNode = doc.DocumentNode.SelectSingleNode("//div[@class='DAicsd']//span[@class='ymyBi']");
+
+            decimal? percentageChange = null;
+            if (percentageNode is not null)
+            {
+
+                var text = percentageNode.InnerHtml.Trim().Replace("%", "");
+                if (decimal.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out var percentage))
+                {
+                    percentageChange = percentage;
+                    _logger.LogInformation("Parsed percentage change: {Percentage}", percentageChange);
+                }
+                else
+                {
+                    _logger.LogWarning("Failed to convert '{Text}' to decimal.", text);
+                }
+            }
+            else
+            {
+                _logger.LogWarning("No percentage change node found.");
+            }
+
             return
             [
                 new Price
                 {
                     Id = Guid.NewGuid(),
                     Value = price,
+                    PercentageChange = percentageChange,
                     Coin = "USD-BRL",
                     Date = DateTime.UtcNow,
                     FontUrl = _sourceUrl
                 }
             ];
+
         }
         catch (Exception e)
         {
